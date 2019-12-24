@@ -93,6 +93,8 @@ def flush (job, end = False):
 		job.plugin_config.echo_ferr.close()
 
 def echo_jobs_converter(jobs):
+	if not jobs:
+		return []
 	if isinstance(jobs, int):
 		return [jobs]
 	if isinstance(jobs, str):
