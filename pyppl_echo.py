@@ -2,6 +2,8 @@ import re
 from pyppl.plugin import hookimpl
 from pyppl.utils import always_list
 
+__version__ = "0.0.1"
+
 def expand_numbers(numbers):
 	"""
 	Expand a descriptive numbers like '0,3-5,7' into read numbers:
