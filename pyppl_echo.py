@@ -56,24 +56,24 @@ def flush (job, end = False):
 		`lasterr`: The leftovers of previously readlines of stderr
 		`end`: Whether this is the last time to flush
 	"""
-	if job.index not in job.proc.plugin_config.echo_jobs:
+	if job.index not in job.proc.config.echo_jobs:
 		return
 
-	if not job.plugin_config.echo_fout or job.plugin_config.echo_fout.closed:
-		job.plugin_config.echo_fout = (job.dir / 'job.stdout').open()
-	if not job.plugin_config.echo_ferr or job.plugin_config.echo_ferr.closed:
-		job.plugin_config.echo_ferr = (job.dir / 'job.stderr').open()
-	outfilter = job.proc.plugin_config.echo_types.get('stdout', '__noout__')
-	errfilter = job.proc.plugin_config.echo_types.get('stderr', '__noerr__')
+	if not job.config.echo_fout or job.config.echo_fout.closed:
+		job.config.echo_fout = (job.dir / 'job.stdout').open()
+	if not job.config.echo_ferr or job.config.echo_ferr.closed:
+		job.config.echo_ferr = (job.dir / 'job.stderr').open()
+	outfilter = job.proc.config.echo_types.get('stdout', '__noout__')
+	errfilter = job.proc.config.echo_types.get('stderr', '__noerr__')
 
 	if outfilter != '__noout__':
-		lines, job.plugin_config.echo_lastout = fileflush(
-			job.plugin_config.echo_fout, job.plugin_config.echo_lastout, end)
+		lines, job.config.echo_lastout = fileflush(
+			job.config.echo_fout, job.config.echo_lastout, end)
 		for line in lines:
 			if not outfilter or re.search(outfilter, line):
 				job.logger(line.rstrip('\n'), level = 'stdout')
-	lines, job.plugin_config.echo_lasterr = fileflush(
-		job.plugin_config.echo_ferr, job.plugin_config.echo_lasterr, end)
+	lines, job.config.echo_lasterr = fileflush(
+		job.config.echo_ferr, job.config.echo_lasterr, end)
 	for line in lines:
 		if line.startswith('pyppl.logger'):
 			logstr = line.rstrip('\n')[12:].lstrip()
@@ -87,10 +87,10 @@ def flush (job, end = False):
 			if not errfilter or re.search(errfilter, line):
 				job.logger(line.rstrip('\n'), level = 'stderr')
 
-	if end and job.plugin_config.echo_fout and not job.plugin_config.echo_fout.closed:
-		job.plugin_config.echo_fout.close()
-	if end and job.plugin_config.echo_ferr and not job.plugin_config.echo_ferr.closed:
-		job.plugin_config.echo_ferr.close()
+	if end and job.config.echo_fout and not job.config.echo_fout.closed:
+		job.config.echo_fout.close()
+	if end and job.config.echo_ferr and not job.config.echo_ferr.closed:
+		job.config.echo_ferr.close()
 
 def echo_jobs_converter(jobs):
 	if not jobs:
@@ -117,8 +117,8 @@ def logger_init(logger):
 
 @hookimpl
 def setup(config):
-	config.plugin_config.echo_jobs  = []
-	config.plugin_config.echo_types = ''
+	config.config.echo_jobs  = []
+	config.config.echo_types = ''
 
 @hookimpl
 def proc_init(proc):
