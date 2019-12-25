@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pyppl_echo"
-version = "0.0.1"
+version = "0.0.2"
 description = "Echo script output to PyPPL logs"
 authors = ["pwwang <pwwang@pwwang.com>"]
 license = "MIT"

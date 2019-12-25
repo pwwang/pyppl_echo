@@ -2,7 +2,7 @@ import re
 from pyppl.plugin import hookimpl
 from pyppl.utils import always_list
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 
 def expand_numbers(numbers):
 	"""
