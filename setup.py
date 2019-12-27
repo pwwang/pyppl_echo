@@ -15,7 +15,7 @@ readme = ''
 setup(
     long_description=readme,
     name='pyppl_echo',
-    version='0.0.3',
+    version='0.0.4',
     description='Echo script output to PyPPL logs',
     python_requires='==3.*,>=3.6.0',
     author='pwwang',
