@@ -1,3 +1,4 @@
+"""Echoing job script outputs to PyPPL logs"""
 import re
 from pyppl.plugin import hookimpl
 from pyppl.utils import always_list
@@ -46,7 +47,7 @@ def fileflush(filed, residue, end = False):
 		residue = ''
 	return lines, residue
 
-def flush (job, end = False):
+def flush(job, end = False): # pylint: disable=too-many-branches
 	"""
 	Flush stdout/stderr
 	@params:
@@ -93,7 +94,8 @@ def flush (job, end = False):
 		job.config.echo_ferr.close()
 
 def echo_jobs_converter(jobs):
-	if not jobs:
+	"""Convert job indexes"""
+	if not jobs and jobs != 0:
 		return []
 	if isinstance(jobs, int):
 		return [jobs]
@@ -102,6 +104,7 @@ def echo_jobs_converter(jobs):
 	return list(jobs)
 
 def echo_types_converter(types):
+	"""Convert job types"""
 	if not types:
 		return {'stdout': None, 'stderr': None}
 	if not isinstance(types, dict):
@@ -112,21 +115,25 @@ def echo_types_converter(types):
 
 @hookimpl
 def logger_init(logger):
+	"""Add log levels"""
 	logger.add_level('STDOUT')
 	logger.add_level('STDERR')
 
 @hookimpl
 def setup(config):
+	"""Add default configs"""
 	config.config.echo_jobs  = []
 	config.config.echo_types = ''
 
 @hookimpl
 def proc_init(proc):
+	"""Add config"""
 	proc.add_config('echo_jobs', converter = echo_jobs_converter)
 	proc.add_config('echo_types', converter = echo_types_converter)
 
 @hookimpl
 def job_init(job):
+	"""Add job configs"""
 	job.add_config('echo_fout')
 	job.add_config('echo_ferr')
 	job.add_config('echo_lastout', '')
@@ -134,4 +141,5 @@ def job_init(job):
 
 @hookimpl
 def job_poll(job, status):
+	"""Do it will polling the job"""
 	flush(job, end = status == 'done')
