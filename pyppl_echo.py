@@ -76,7 +76,7 @@ def flush(job, end=False):  # pylint: disable=too-many-branches
                                                    end)
         for line in lines:
             if not outfilter or re.search(outfilter, line):
-                job.logger(line.rstrip('\n'), level='stdout')
+                job.logger(line.rstrip('\n'), level='stdout', plugin='echo')
     lines, job.config.echo_lasterr = fileflush(job.config.echo_ferr,
                                                job.config.echo_lasterr, end)
     for line in lines:
@@ -87,10 +87,10 @@ def flush(job, end=False):  # pylint: disable=too-many-branches
             loglevel, logmsg = logstr.split(':', 1)
             loglevel = loglevel[1:] if loglevel else 'log'
             # '_' makes sure it's not filtered by log levels
-            job.logger(logmsg.lstrip(), level='_' + loglevel)
+            job.logger(logmsg.lstrip(), level='_' + loglevel, plugin='echo')
         elif errfilter != '__noerr__':
             if not errfilter or re.search(errfilter, line):
-                job.logger(line.rstrip('\n'), level='stderr')
+                job.logger(line.rstrip('\n'), level='stderr', plugin='echo')
 
     if end and job.config.echo_fout and not job.config.echo_fout.closed:
         job.config.echo_fout.close()
