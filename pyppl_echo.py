@@ -4,7 +4,7 @@ from pyppl.plugin import hookimpl
 from pyppl.config import config
 from pyppl.utils import always_list
 
-__version__ = "0.0.5"
+__version__ = "0.0.6"
 
 config.config.echo_jobs = []
 config.config.echo_types = ''
