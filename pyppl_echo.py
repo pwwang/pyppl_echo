@@ -1,10 +1,13 @@
 """Echoing job script outputs to PyPPL logs"""
 import re
 from pyppl.plugin import hookimpl
+from pyppl.config import config
 from pyppl.utils import always_list
 
 __version__ = "0.0.5"
 
+config.config.echo_jobs = []
+config.config.echo_types = ''
 
 def expand_numbers(numbers):
     """
@@ -126,12 +129,6 @@ def logger_init(logger):
     logger.add_level('STDOUT')
     logger.add_level('STDERR')
 
-
-@hookimpl
-def setup(config):
-    """Add default configs"""
-    config.config.echo_jobs = []
-    config.config.echo_types = ''
 
 
 @hookimpl
